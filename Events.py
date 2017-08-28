@@ -12,6 +12,7 @@ import pygame
 import pygame.gfxdraw
 from pygame.locals import *
 from pymunk.vec2d import Vec2d
+from itertools import product
 import pymunk
 import pymunk.pygame_util
 import random
@@ -21,7 +22,9 @@ class Events():
     
     # Initialize the pymunk physics engine details
     def __init__(self):
+        pass
 
+    def pymunk_setup(self):
         # Initialize space and set gravity for space to do simulation over
         self.space = pymunk.Space()
         self.space.gravity = (0.0, 0.0)
@@ -47,13 +50,12 @@ class Events():
         self.counter = 0
 
         # Initialize list to hold all events, and the timer to timestamp them
-        self.events = list()
         self.timer = 0.0
 
-    def get_summary(self):
+    def get_summary(self, animate, seq):
 
-        events = self.simulate(animate=False)
-        times = np.unique([i[1] for i in events])
+        events = self.simulate(animate, seq)
+        times = np.unique([i[2] for i in events])
 
         summary = list()
         for time in times:
@@ -61,22 +63,26 @@ class Events():
             temp = ""
             first = False
             for event in events:
-                if event[1] == time:
+                if event[2] == time:
                     if not first:
                         temp += event[0]
+                        temp_bool = event[1]
                         first = True
 
                     else:
                         temp += ' AND ' + event[0]
 
-            summary.append([temp, time])
+            summary.append((temp, temp_bool, time))
 
-        return summary
+        return tuple(summary)
 
     def simulate(self, animate=False, seq='1'):
 
+        self.pymunk_setup()
+
+        self.events = []
         self.counter = 0
-        self.seq = seq
+        self.sequence = seq
 
         # If animating, initialize pygame animation
         if animate:
@@ -115,6 +121,9 @@ class Events():
         
         # Run the simulation forever, until exit
         while True:
+
+            if self.counter == len(self.sequence):
+                self.sequence += '1'
 
             if animate:
 
@@ -159,6 +168,7 @@ class Events():
                 pygame.display.update()
                 clock.tick(100)
 
+
             else:
                 # Simulation auto ends when ball e goes through game or balls stop
                 if done:
@@ -178,6 +188,9 @@ class Events():
             self.space.step(1/100.0) #3
             self.timer += (1/100.0)
             self.timer = round(self.timer,5)
+
+        self.counter = 0
+
 
 
     def add_balls(self, space):
@@ -258,28 +271,48 @@ class Events():
 
     def collide_ball_ab(self, arbiter, space, data):
     
-        self.events.append(['Ball A and Ball B collide', self.timer])       
-        return True
+        if int(self.sequence[self.counter]):
+            self.events.append(['Ball A and Ball B collide', True, self.timer])       
+            self.counter += 1
+            return True
+        else:
+            self.events.append(['Ball A and Ball B collide', False, self.timer])
+            self.counter += 1
+            return False
 
     def collide_ball_ae(self, arbiter, space, data):
 
-        self.events.append(['Ball A and Ball E collide', self.timer])
-        return True
+        if int(self.sequence[self.counter]):
+            self.events.append(['Ball A and Ball E collide', True, self.timer])
+            self.counter += 1
+            return True
+        else:
+            self.events.append(['Ball A and Ball E collide', False, self.timer])
+            self.counter += 1
+            return False
 
     def collide_ball_be(self, arbiter, space, data):
 
-        self.events.append(['Ball B and Ball E collide', self.timer])
-        return True
+        if int(self.sequence[self.counter]):
+            self.events.append(['Ball B and Ball E collide', True, self.timer])
+            self.counter += 1
+            return True
+        else:
+            self.events.append(['Ball B and Ball E collide', False, self.timer])
+            self.counter += 1
+            return False
 
-    def collide_ball_a_wall_b(self, arbiter, space, data):
 
-        self.events.append(['Ball A and Bottom Wall collide', self.timer])
-        return True
 
-    def collide_ball_a_wall_t(self, arbiter, space, data):
+    # def collide_ball_a_wall_b(self, arbiter, space, data):
 
-        self.events.append(['Ball A and Top Wall collide', self.timer])
-        return True
+    #     self.events.append(['Ball A and Bottom Wall collide', self.timer])
+    #     return True
+
+    # def collide_ball_a_wall_t(self, arbiter, space, data):
+
+    #     self.events.append(['Ball A and Top Wall collide', self.timer])
+    #     return True
 
     # def collide_ball_a_wall_bl(self, arbiter, space, data):
 
@@ -314,7 +347,7 @@ class Events():
     def ball_e_through_gate(self):
 
         if self.balls_body[2].position[0] < -30:
-            self.events.append(['Ball E going through the gate', self.timer])
+            self.events.append(['Ball E going through the gate', True, self.timer])
             return True
 
     def balls_stopped(self):
@@ -322,55 +355,55 @@ class Events():
         temp = [abs(i.velocity[0])+abs(i.velocity[1]) < 20 for i in self.balls_body]
 
         if all(temp) and self.balls_body[2].position[0] > 0:
-            self.events.append(['Ball E not going through the gate', self.timer])
+            self.events.append(['Ball E going through the gate', False, self.timer])
         
         return all(temp)
 
-    def is_static(self):
+    # def is_static(self):
 
-        ball_a = self.balls_body[0]
-        ball_b = self.balls_body[1]
-        ball_e = self.balls_body[2]
+    #     ball_a = self.balls_body[0]
+    #     ball_b = self.balls_body[1]
+    #     ball_e = self.balls_body[2]
 
-        if ball_a.velocity[0] == 0 and ball_a.velocity[1]== 0:
-            self.events.append(['Ball A not moving', self.timer])
+    #     if ball_a.velocity[0] == 0 and ball_a.velocity[1]== 0:
+    #         self.events.append(['Ball A not moving', self.timer])
 
-        if ball_b.velocity[0] == 0 and ball_b.velocity[1]== 0:
-            self.events.append(['Ball B not moving', self.timer])
+    #     if ball_b.velocity[0] == 0 and ball_b.velocity[1]== 0:
+    #         self.events.append(['Ball B not moving', self.timer])
 
-        if ball_e.velocity[0] == 0 and ball_e.velocity[1]== 0:
-            self.events.append(['Ball E not moving', self.timer])
+    #     if ball_e.velocity[0] == 0 and ball_e.velocity[1]== 0:
+    #         self.events.append(['Ball E not moving', self.timer])
 
-    def is_moving(self):
+    # def is_moving(self):
 
-        ball_a = self.balls_body[0]
-        ball_b = self.balls_body[1]
-        ball_e = self.balls_body[2]
+    #     ball_a = self.balls_body[0]
+    #     ball_b = self.balls_body[1]
+    #     ball_e = self.balls_body[2]
 
-        if ball_a.velocity[0] > 0 or ball_a.velocity[1] > 0:
-            self.events.append(['Ball A moving', self.timer])
+    #     if ball_a.velocity[0] > 0 or ball_a.velocity[1] > 0:
+    #         self.events.append(['Ball A moving', self.timer])
 
-        if ball_b.velocity[0] > 0 or ball_b.velocity[1] > 0:
-            self.events.append(['Ball B moving', self.timer])
+    #     if ball_b.velocity[0] > 0 or ball_b.velocity[1] > 0:
+    #         self.events.append(['Ball B moving', self.timer])
 
-        if ball_e.velocity[0] > 0 or ball_e.velocity[1] > 0:
-            self.events.append(['Ball E moving', self.timer])
+    #     if ball_e.velocity[0] > 0 or ball_e.velocity[1] > 0:
+    #         self.events.append(['Ball E moving', self.timer])
 
 
-    def entering_scene(self):
+    # def entering_scene(self):
 
-        ball_a = self.balls_body[0]
-        ball_b = self.balls_body[1]
-        ball_e = self.balls_body[2]
+    #     ball_a = self.balls_body[0]
+    #     ball_b = self.balls_body[1]
+    #     ball_e = self.balls_body[2]
 
-        if ball_a.position[0] > 800:
-            self.events.append(['Ball A enters', self.timer])
+    #     if ball_a.position[0] > 800:
+    #         self.events.append(['Ball A enters', self.timer])
 
-        if ball_b.position[0] > 800:
-            self.events.append(['Ball B enters', self.timer])
+    #     if ball_b.position[0] > 800:
+    #         self.events.append(['Ball B enters', self.timer])
 
-        if ball_e.position[0] > 800:
-            self.events.append(['Ball E enters', self.timer])
+    #     if ball_e.position[0] > 800:
+    #         self.events.append(['Ball E enters', self.timer])
 
 
     def collision_setup(self):
@@ -390,45 +423,45 @@ class Events():
                                             self.collision_types['ball_e'])
         ball_be.begin = self.collide_ball_be
 
-        # Handle collisions between a and wallb
-        ball_a_wall_b = self.space.add_collision_handler(self.collision_types['ball_a'],
-                                            self.collision_types['wall_b'])
-        ball_a_wall_b.begin = self.collide_ball_a_wall_b
+        # # Handle collisions between a and wallb
+        # ball_a_wall_b = self.space.add_collision_handler(self.collision_types['ball_a'],
+        #                                     self.collision_types['wall_b'])
+        # ball_a_wall_b.begin = self.collide_ball_a_wall_b
 
-        # Handle collisions between a and wallt
-        ball_a_wall_t = self.space.add_collision_handler(self.collision_types['ball_a'],
-                                            self.collision_types['wall_t'])
-        ball_a_wall_t.begin = self.collide_ball_a_wall_t
+        # # Handle collisions between a and wallt
+        # ball_a_wall_t = self.space.add_collision_handler(self.collision_types['ball_a'],
+        #                                     self.collision_types['wall_t'])
+        # ball_a_wall_t.begin = self.collide_ball_a_wall_t
 
-        # Handle collisions between a and wallb
-        ball_a_wall_bl = self.space.add_collision_handler(self.collision_types['ball_a'],
-                                            self.collision_types['wall_bl'])
-        ball_a_wall_bl.begin = self.collide_ball_a_wall_bl
+        # # Handle collisions between a and wallb
+        # ball_a_wall_bl = self.space.add_collision_handler(self.collision_types['ball_a'],
+        #                                     self.collision_types['wall_bl'])
+        # ball_a_wall_bl.begin = self.collide_ball_a_wall_bl
 
-        # Handle collisions between a and wallb
-        ball_a_wall_tl = self.space.add_collision_handler(self.collision_types['ball_a'],
-                                            self.collision_types['wall_tl'])
-        ball_a_wall_tl.begin = self.collide_ball_a_wall_tl
+        # # Handle collisions between a and wallb
+        # ball_a_wall_tl = self.space.add_collision_handler(self.collision_types['ball_a'],
+        #                                     self.collision_types['wall_tl'])
+        # ball_a_wall_tl.begin = self.collide_ball_a_wall_tl
 
-        # Handle collisions between a and wallb
-        ball_b_wall_b = self.space.add_collision_handler(self.collision_types['ball_b'],
-                                            self.collision_types['wall_b'])
-        ball_b_wall_b.begin = self.collide_ball_b_wall_b
+        # # Handle collisions between a and wallb
+        # ball_b_wall_b = self.space.add_collision_handler(self.collision_types['ball_b'],
+        #                                     self.collision_types['wall_b'])
+        # ball_b_wall_b.begin = self.collide_ball_b_wall_b
 
-        # Handle collisions between a and wallt
-        ball_b_wall_t = self.space.add_collision_handler(self.collision_types['ball_b'],
-                                            self.collision_types['wall_t'])
-        ball_b_wall_t.begin = self.collide_ball_b_wall_t
+        # # Handle collisions between a and wallt
+        # ball_b_wall_t = self.space.add_collision_handler(self.collision_types['ball_b'],
+        #                                     self.collision_types['wall_t'])
+        # ball_b_wall_t.begin = self.collide_ball_b_wall_t
 
-        # Handle collisions between a and wallb
-        ball_b_wall_bl = self.space.add_collision_handler(self.collision_types['ball_b'],
-                                            self.collision_types['wall_bl'])
-        ball_b_wall_bl.begin = self.collide_ball_b_wall_bl
+        # # Handle collisions between a and wallb
+        # ball_b_wall_bl = self.space.add_collision_handler(self.collision_types['ball_b'],
+        #                                     self.collision_types['wall_bl'])
+        # ball_b_wall_bl.begin = self.collide_ball_b_wall_bl
 
-        # Handle collisions between a and wallb
-        ball_b_wall_tl = self.space.add_collision_handler(self.collision_types['ball_b'],
-                                            self.collision_types['wall_tl'])
-        ball_b_wall_tl.begin = self.collide_ball_b_wall_tl 
+        # # Handle collisions between a and wallb
+        # ball_b_wall_tl = self.space.add_collision_handler(self.collision_types['ball_b'],
+        #                                     self.collision_types['wall_tl'])
+        # ball_b_wall_tl.begin = self.collide_ball_b_wall_tl 
 
 
     def to_pygame(self, position):

@@ -8,44 +8,6 @@
 
 
 """
-    E <-- B <--- A
-
-    - A collides B CAUSING B collides E AFFECTS E through the gate    
-	- A collides B 
-
-    1. A collides B
-    B collides E
-    E through gate
-
-    Counterfactuals:
-
-    1. No A collides B
-    E not through gate
-
-    2. No B collides E
-    A collides E
-    E through gate
-		
-		A
-		|
-	E---B
-
-	- A collides B CAUSING E through the gate
-	- A collides B PREVENTING B collides E CAUSING E through the gate 
-
-	Full
-	1. A Collides B
-	2. E not through gate
-
-	No A collides B
-	1. B collides E
-	2. E though gate
-
-	No 
-
-	Preventing is what happens in the counterfactual and not in the actual
-	Causing is what happens in the actual and not in the counterfactual
-
 
 	Rules for CF Relation Building:
 
@@ -70,7 +32,44 @@
 	- If next event at t+1 is not in summary list of events, then event at time t 
 	prevented event at time t+1
 	- If next event at t+1 
-
-
 """
+
+from Events import Events
+from itertools import product
+
+class Counterfactuals():
+
+	def __init__(self):
+		pass
+
+	def get_tree(self):
+
+       	# Build a space of counterfactuals (fix this to a smarter search later)
+		sequences = []
+		sequences += [''.join(seq) for seq in product('01', repeat=1)]
+		sequences += [''.join(seq) for seq in product('01', repeat=2)]
+		sequences += [''.join(seq) for seq in product('01', repeat=3)]
+		sequences += [''.join(seq) for seq in product('01', repeat=4)]
+		sequences += [''.join(seq) for seq in product('01', repeat=5)]
+		sequences += [''.join(seq) for seq in product('01', repeat=6)]
+
+		# Initialize events engine
+		E = Events()
+
+		# Tree will be stored in a set to avoid duplicate counterfactuals
+		tree = set()
+
+		# Do the brute force search
+		for seq in sequences:
+			tree.add(E.get_summary(False,seq))
+		
+		return list(tree)
+
+	def build_relations(self, tree):
+
+		# Takes in a tree, and builds relations among its branches
+
+
+
+
 
