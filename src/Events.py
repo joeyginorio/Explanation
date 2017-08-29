@@ -41,6 +41,12 @@ class Events():
             'gate':7
         }
 
+        # self.collisions = set([
+        #     'Ball A and Ball B collide',
+        #     'Ball A and Ball E collide',
+        #     'Ball B and Ball E collide'
+        #     ])
+
         # Add rigid bodies to physics engine
         self.balls_body, self.balls_shape = self.add_balls(self.space)
         self.walls = self.add_walls(self.space)
@@ -73,6 +79,13 @@ class Events():
                         temp += ' AND ' + event[0]
 
             summary.append((temp, temp_bool, time))
+
+        # # Append events that didn't happen
+        # temp = set(zip(*summary)[0])
+        # temp = list(self.collisions.difference(temp))
+        # for t in temp:
+        #     summary.append((t, False, -1))
+
 
         return tuple(summary)
 
@@ -185,7 +198,7 @@ class Events():
             done = self.ball_e_through_gate()
 
             # Take a step in the simulation, update clock/ticks
-            self.space.step(1/100.0) #3
+            self.space.step(1/10.0) #3
             self.timer += (1/100.0)
             self.timer = round(self.timer,5)
 
