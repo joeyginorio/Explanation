@@ -110,6 +110,7 @@ class Events():
            
         # Set initial impulses
         self.balls_body[0].apply_impulse_at_local_point([-300,0])
+        # self.balls_body[2].apply_impulse_at_local_point([-60,0])
 
         # Will be used to auto-exit if balls stop moving
         done = False
@@ -176,7 +177,7 @@ class Events():
             done = self.ball_e_through_gate()
 
             # Take a step in the simulation, update clock/ticks
-            self.space.step(1/10.0) #3
+            self.space.step(1/100.0) #3
             self.timer += (1/100.0)
             self.timer = round(self.timer,5)
 
@@ -299,7 +300,7 @@ class Events():
 
         temp = [abs(i.velocity[0])+abs(i.velocity[1]) < 20 for i in self.balls_body]
 
-        if all(temp) and self.balls_body[2].position[0] > 0:
+        if all(temp) and self.balls_body[2].position[0] > -20:
             self.events.append(['Ball E not going through the gate', self.timer])
         
         return all(temp)

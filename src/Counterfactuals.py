@@ -146,11 +146,9 @@ class Counterfactuals():
 		caused.append((e1,'CAUSED',e2, cause_1/(cause_1+cause_2)))
 		prevented.append((e1,'PREVENTED',complement[e2], cause_1/(cause_1+cause_2)))
 		if len(affect_times) > 1:
-			affected.append((e1,'AFFECTED',complement[e2], tuple(affect_times)))
+			affected.append((e1,'AFFECTED',e2, tuple(affect_times)))
 
-		return caused, prevented, affected
-
-				# pass
+		return caused, affected
 
 	# E1 CAUSED E2 if 
 	# e1 -> e2
