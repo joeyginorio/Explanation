@@ -1,0 +1,43 @@
+{
+        "stim":[
+        {
+            "name": "clip1"
+        },
+        {
+            "name": "clip2"
+        },
+        {
+            "name": "clip3"
+        },
+        {
+            "name": "clip4"
+        },
+        {
+            "name": "clip5"
+        },
+        {
+            "name": "clip6"
+        },
+        {
+            "name": "clip7"
+        },
+        {
+            "name": "clip8"
+        }
+    ],
+    "text": "",
+    "questions":[
+        {"q": " ''The red ball <b>caused</b> the black ball to go through the gate.'' ", 
+        "type": "caused",
+        "l": ["not at all", "", "very much"]},
+        {"q": " ''The red ball <b>helped</b> the black ball to go through the gate.'' ", 
+        "type": "helped",
+        "l": ["not at all", "", "very much"]},
+        {"q": " ''The red ball <b>enabled</b> the black ball to go through the gate.'' ", 
+        "type": "enabled",
+        "l": ["not at all", "", "very much"]}
+    ]
+}
+
+
+ 
