@@ -57,7 +57,6 @@ class Counterfactuals():
 
 		# Initialize events engine
 		E = Events()
-
 		# Tree will be stored in a set to avoid duplicate counterfactuals
 		counterfactuals = set()
 		samples = list()
@@ -68,7 +67,6 @@ class Counterfactuals():
 			len_before = len(counterfactuals)
 			counterfactuals.add(temp)
 			len_after = len(counterfactuals)
-
 			if len_before != len_after:
 				cf_seq.append(seq)
 
@@ -91,34 +89,81 @@ class Counterfactuals():
 		to_check = set()
 
 		for cf in counterfactuals:
-			cf = (c for c in cf if c[2] > 0)
 			to_check = to_check.union(set(combinations(zip(*cf)[0],2)))
 
 		return tuple(to_check), samples
 		
-	def get_relation(self, e1, e2, samples):
+	def get_relations(self, e1, e2, samples):
+        
+		complement = {
+            'Ball A and Ball B collide': 'Ball A and Ball B do not collide',
+            'Ball A and Ball E collide': 'Ball A and Ball E do not collide',
+            'Ball B and Ball E collide': 'Ball B and Ball E do not collide',
+            'Ball A and Ball B do not collide': 'Ball A and Ball B collide',
+            'Ball A and Ball E do not collide': 'Ball A and Ball E collide',
+            'Ball B and Ball E do not collide': 'Ball B and Ball E collide',
+            'Ball E going through the gate': 'Ball E not going through the gate',
+            'Ball E not going through the gate': 'Ball E going through the gate'
+        }
+
+		caused = list()
+		prevented = list()
+		affected = list()
 
 		cause_1 = 0.0
 		cause_2 = 0.0
+		affect_1 = 0.0
+		affect_2 = 0.0
+		affect_times = set()
 		for sample in samples:
 			sample = zip(*sample)
 			for event in sample:
 
-				if e1 in sample[0]:
-					e1_index = sample[0].index(e1)
-					# e2_index = sample[0].index(e2)
-					if sample[1][e1_index] == False and e2 not in sample[0]:
-						cause_1 += 1.0
-					if sample[1][e1_index] == False and e2 in sample[0]:
-						e2_index = sample[0].index(e2)
-						if sample[1][e2_index] == False:
-							cause_1 += 1.0
-						else:
-							cause_2 += 1.0
+				if e1 in sample[0] and e2 in sample[0]:
+					cause_1 += 1
+				if e1 in sample[0] and e2 not in sample[0]:
+					cause_2 += 1
+
+				if e1 in sample[0] and e2 in sample[0]:
+					affect_1 += 1
+					e2_index = sample[0].index(e2)
+					if len(affect_times) == 0:
+						affect_times.add(sample[1][e2_index])
+					else: 
+						if all([abs(sample[1][e2_index]-t) > .08 for t in list(affect_times)]):
+							affect_times.add(sample[1][e2_index])
+
+				if complement[e1] in sample[0] and e2 in sample[0]:
+					affect_2 += 1
+					e2_index = sample[0].index(e2)
+					if len(affect_times) == 0:
+						affect_times.add(sample[1][e2_index])
+					else: 
+						if all([abs(sample[1][e2_index]-t) > .08 for t in list(affect_times)]):
+							affect_times.add(sample[1][e2_index])
 
 
-		return cause_1, cause_2
+		caused.append((e1,'CAUSED',e2, cause_1/(cause_1+cause_2)))
+		prevented.append((e1,'PREVENTED',complement[e2], cause_1/(cause_1+cause_2)))
+		if len(affect_times) > 1:
+			affected.append((e1,'AFFECTED',complement[e2], tuple(affect_times)))
+
+		return caused, prevented, affected
 
 				# pass
 
 	# E1 CAUSED E2 if 
+	# e1 -> e2
+	# e1 -> ~e2
+	# E1 AFFECTED E2 if 
+	# When E1 in sample, e2 at time t
+	# When E2 not in sample, e2 at time t+1
+	"""
+	
+	if e1 in sample[0] and e2 in sample[0]:
+		if e2 
+
+
+
+
+	"""
