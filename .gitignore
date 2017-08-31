@@ -1,2 +1,3 @@
 participants.db
 server.log
+*.pyc
