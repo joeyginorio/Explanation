@@ -133,17 +133,6 @@ var TestPhase = function() {
                 $('.stim_video').trigger('play');
             });
 
-
-            // Replace the name with the piece from the template
-            // select a random name from the choices
-            // var view = {
-            //     'name': that.trialinfo.name
-            // } ;
-            
-            // $('.stim_text').html(Mustache.render($c.text, view)) ;
-
-            // debug($c.questions) ;
-
             // Create the HTML for the question and slider.
             var html = "" ; 
             for (var i=0; i<that.trialinfo.questions.length; i++) {
@@ -201,9 +190,18 @@ var TestPhase = function() {
             response.push($('.s-'+i).slider('value')) ;
         }
 
-        var question = that.trialinfo.questions.map(function (question) {return question.type});
+        var questions = that.trialinfo.questions
+        var clip = that.trialinfo.name
+        var outcome = that.trialinfo.outcome
+
+        var data = {
+            questions: questions,
+            response: response,
+            clip: clip,
+            outcome: outcome
+        }
         
-        psiTurk.recordTrialData([this.trialinfo.name, question[0], response[0],question[1], response[1], question[2], response[2],])
+        psiTurk.recordTrialData(data)
 
         STATE.set_index(STATE.index + 1);
         
