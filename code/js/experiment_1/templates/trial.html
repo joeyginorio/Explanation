@@ -1,0 +1,72 @@
+<!-- Instructions -->
+<div class="slide" id="instructions-training-1">
+  <h1>Instructions</h1>
+  <div class="blue">
+    <p>In this experiment, your task is to decide how well different sentences explain what happened in a video clip.</p>
+    <p>The image below shows you an example of the kinds of clips you are going to see. 
+    </p>  
+    <img src="static/images/example_stimulus.jpg" alt="Example" style="width:400px;height:300px"> 
+    <p> All of the clips feature three billiard balls, <b>ball A</b>, <b>ball B</b>, and <b>ball E</b></p>
+
+
+    Some clips also feature a box (here it was placed in the middle of the scene). In the clip above, both balls first collide, the black ball then bounces off a wall and goes through the red gate. 
+    </p> 
+    <p>You will judge for each clip how well the following three sentences describe the clip: </p>
+    <li> "The red ball <b>caused</b> the black ball to go through the gate."</li>
+    <li> "The red ball  <b>helped</b> the black ball to go through the gate."</li>
+    <li> "The red ball  <b>enabled</b> the black ball to go through the gate."</li>
+    <p> Please click <b>Start</b> to begin the experiment.
+    </p>  
+  </div>
+
+  <div class="continue">
+    <button type="button" class="next">Start</button>
+  </div>
+</div>
+
+<!-- Trial -->
+<div class="slide" id="trial">
+  <div id="progress">
+    <div id="progress-text">Progress</div>
+    <div id="indicator-container">
+      <div id="indicator-outer">
+        <div id="indicator-stage"></div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+  <br />
+  <hr />
+  <div id="stim">
+    <div id ="prompt-text"> To what extent do you think the different statements on the right are good explanations of what happened in the video clip?</div>
+  
+  </br>
+
+  <div class = "container">   
+        <div class ="video_container">
+        <video class ="stim_video" width="400" height="300" loop autoplay>
+              <source src = "" id = "video_mp4">
+              <source src = "" id = "video_webm">
+              <source src = "" id = "video_ogg">
+        </video>
+        <div class="continue">
+    <button type="button" class="next" id="play">reload video</button>
+  </div>
+  </div>
+  <div class = "choices_container">
+      <div id="choices"></div>
+  </div>  
+  </div>
+
+  <div class="spacer"></div>
+
+    <p class="stim_text"> <b>Note</b>: The video is played in a loop. If it stops playing, just click the 'reload video' button. </p>
+  </div>
+
+<div class="spacer"></div>
+  <hr />   
+
+  <div class="continue">
+    <button type="button" id="trial_next" class="next">Continue</button>
+  </div>
+</div>

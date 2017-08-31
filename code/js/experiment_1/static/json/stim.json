@@ -1,0 +1,57 @@
+{
+        "stim":[
+        {
+            "name": "clip_3",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "positive"
+        },
+        {
+            "name": "clip_5",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "negative"
+        },
+        {
+            "name": "clip_7",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "positive"
+        },
+        {
+            "name": "clip_9",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "negative"
+        },
+        {
+            "name": "clip_13",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "negative"
+        },
+        {
+            "name": "clip_15",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "positive"
+        },
+        {
+            "name": "clip_16",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "positive"
+        },
+        {
+            "name": "clip_18",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "negative"
+        },
+        {
+            "name": "clip_23",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "positive"
+        },
+        {
+            "name": "clip_26",
+            "questions": ["Q1", "Q2", "Q3"],
+            "outcome": "negative"
+        }
+    ]
+}
+
+
+ 
