@@ -110,6 +110,7 @@ var TestPhase = function() {
         
         // Load the new trialinfo
         this.trialinfo = $c.trials[STATE.index];
+        var questions;
 
         // Update progress bar
         update_progress(STATE.index, $c.trials.length);
@@ -133,18 +134,21 @@ var TestPhase = function() {
                 $('.stim_video').trigger('play');
             });
 
+            //Shuffle question order 
+            questions = shuffle(that.trialinfo.questions)
+
             // Create the HTML for the question and slider.
             var html = "" ; 
-            for (var i=0; i<that.trialinfo.questions.length; i++) {
-                // var q = Mustache.render(that.trialinfo.questions[i].q, view);
-                var q = that.trialinfo.questions[i];
+            for (var i=0; i<questions.length; i++) {
+                // var q = Mustache.render(questions[i].q, view);
+                var q = questions[i];
                 // html += '<p class=".question">' + (i+1) + '. ' + q +'</p><div class="s-'+i+'"></div><div class="l-'+i+'"></div><br />' ;
                 html += '<p class=".question">' + q +'</p><div class="s-'+i+'"></div><div class="l-'+i+'"></div><br />' ;
             }
             $('#choices').html(html) ;
 
             // Bulid the sliders for each question
-            for (var i=0; i<that.trialinfo.questions.length; i++) {
+            for (var i=0; i<questions.length; i++) {
                 // Create the sliders
                 $('.s-'+i).slider().on("slidestart", function( event, ui ) {
                     // Show the handle
@@ -152,14 +156,14 @@ var TestPhase = function() {
 
                     // Sum is the number of sliders that have been clicked
                     var sum = 0 ;
-                    for (var j=0; j<that.trialinfo.questions.length; j++) {
+                    for (var j=0; j<questions.length; j++) {
                         if ($('.s-'+j).find('.ui-slider-handle').is(":visible")) {
                             sum++ ;
                         }
                     }
                     // If the number of sliders clicked is equal to the number of sliders
                     // the user can continue. 
-                    if (sum == that.trialinfo.questions.length) {
+                    if (sum == questions.length) {
                         $('#trial_next').prop('disabled', false) ;
                     }
                 });
@@ -176,7 +180,7 @@ var TestPhase = function() {
             // Disable button which will be enabled once the sliders are clicked
             $('#trial_next').prop('disabled', true);
 
-            debug(that.trialinfo);
+            // debug(that.trialinfo);
         }        
     };
 
@@ -186,11 +190,11 @@ var TestPhase = function() {
     this.record_response = function() {        
         // TODO MAKE THIS CORRECT!
         var response = [] ;
-        for (var i=0; i<that.trialinfo.questions.length; i++) {
+        for (var i=0; i<questions.length; i++) {
             response.push($('.s-'+i).slider('value')) ;
         }
 
-        var questions = that.trialinfo.questions
+        // var questions = questions
         var clip = that.trialinfo.name
         var outcome = that.trialinfo.outcome
 
@@ -202,6 +206,7 @@ var TestPhase = function() {
         }
         
         psiTurk.recordTrialData(data)
+        console.log(data)
 
         STATE.set_index(STATE.index + 1);
         

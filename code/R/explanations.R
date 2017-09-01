@@ -31,27 +31,27 @@ df.long = df.data$datastring %>%
   as.tbl_json() %>% 
   spread_values(participant = jstring('workerId')) %>%
   enter_object('data') %>%
-  gather_array('order') %>% 
+  gather_array('clip.order') %>% 
   enter_object('trialdata') %>% 
   spread_values(clip = jstring('clip'),
                 outcome = jstring('outcome')) %>% 
   enter_object('questions') %>% 
-  gather_array('index') %>% 
+  gather_array('question.order') %>% 
   append_values_string('question') %>% 
   left_join(
     df.data$datastring %>% 
       as.tbl_json() %>% 
       enter_object('data') %>%
-      gather_array('order') %>% 
+      gather_array('clip.order') %>% 
       enter_object('trialdata') %>% 
       enter_object('response') %>% 
-      gather_array('index') %>% 
+      gather_array('question.order') %>% 
       append_values_number('response')
   ) %>% 
   mutate(clip = str_replace_all(clip,"clip_",""),
          clip = as.numeric(clip)) %>% 
-  select(-document.id,participant,clip,order,outcome,index,question,response) %>% 
-  arrange(participant,clip,index)
+  select(participant,clip,clip.order,outcome,question.order,question,response) %>% 
+  arrange(participant,clip,question)
   
 
   
