@@ -6,42 +6,14 @@
 	represented by a physics engine.
 """
 
-
-"""
-
-	Rules for CF Relation Building:
-
-	1. Simulate actual world, get e_summary()
-	- Store current event e, at time t
-	- Store next event e_next, at time t+1
-	
-	2. Simulate counterfactual world
-	- Ignore event e, at time t
-	- Store next event e_next_cf, at time t+1
-
-	3. Build Relations 
-
-	If next event e_next == e_next_cf
-	- If e_next and e_next_cf happen at same time t+1, e MADE NO DIFFERENCE e_next
-	- If e_next and e_next_cf happen at different times t+1, e AFFECTED e_next
-
-	If next event e_next != e_next_cf
-	- If e_next_cf not in e_summary, e CAUSED e_next
-	- If e_next_cf in e_summary, 
-
-	- If next event at t+1 is not in summary list of events, then event at time t 
-	prevented event at time t+1
-	- If next event at t+1 
-"""
-
 from Events import Events
 from itertools import combinations
 from itertools import product
 
 class Counterfactuals():
 
-	def __init__(self):
-		pass
+	def __init__(self, E):
+		self.E = E
 
 	# in non-noisy world, search over all counterfactuals that would matter
 	# then with that set, simulate 100 times w/ noise
@@ -55,15 +27,13 @@ class Counterfactuals():
 		# sequences += [''.join(seq) for seq in product('01', repeat=4)]
 		# sequences += [''.join(seq) for seq in product('01', repeat=5)]
 
-		# Initialize events engine
-		E = Events()
 		# Tree will be stored in a set to avoid duplicate counterfactuals
 		counterfactuals = set()
 		samples = list()
 
 		cf_seq = list()
 		for seq in sequences:
-			temp = E.get_summary(False,seq)
+			temp = self.E.get_summary(False,seq)
 			len_before = len(counterfactuals)
 			counterfactuals.add(temp)
 			len_after = len(counterfactuals)
@@ -74,7 +44,7 @@ class Counterfactuals():
 		# Do the brute force search
 		for i in range(100):
 			for seq in cf_seq:
-				temp = E.get_summary(False,seq)
+				temp = self.E.get_summary(False,seq)
 				samples.append(temp)
 				
 				# temp = (t for t in temp if t[2] > 0)
@@ -91,7 +61,16 @@ class Counterfactuals():
 		for cf in counterfactuals:
 			to_check = to_check.union(set(combinations(zip(*cf)[0],2)))
 
-		return tuple(to_check), samples
+		to_check_final = list()
+		for check in to_check:
+			if check[1] != 'Ball E going through the gate' and \
+				check[1] != 'Ball E not going through the gate' and \
+				'not' in check[1]:
+				continue
+			else:
+				to_check_final.append(check)
+
+		return tuple(to_check_final), samples
 		
 	def get_relations(self, e1, e2, samples):
         

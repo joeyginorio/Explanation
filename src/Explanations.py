@@ -2,11 +2,12 @@
 # BMM Summer Project w/ Tobi
 
 """
-
+	This script uses counterfactuals over events in a physics engine to
+	generate explanations.
 """
 
-
 import numpy as np
+import operator
 from Events import Events
 from Counterfactuals import Counterfactuals
 
@@ -15,13 +16,44 @@ class Explanations():
 
 	"""
 
-	def __init__(self):
-		pass
+	def __init__(self, a_pos, a_vel, b_pos, b_vel, e_pos, e_vel):
+		self.E = Events(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
+
+	def posterior_explanations(self):
+
+		relations = self.setup_explanations()
+		explanations = self.build_explanations(relations)
+
+		likelihood = np.array(self.likelihood_explanations(explanations))
+		prior = np.array(self.prior_explanations(explanations))
+
+		posterior = likelihood*prior
+		explanations = [e[0:-1] for e in explanations]
+		explanations = [self.edit_explanation(e) for e in explanations]
+
+		sorted_posterior = sorted(dict(zip(explanations,posterior)).items(), 
+			key=operator.itemgetter(1), reverse=True)
+
+		return sorted_posterior
 
 	def setup_explanations(self):
 		
-		C = Counterfactuals()
+		C = Counterfactuals(self.E)
 		checklist, samples = C.setup_checklist()
+
+		# diff_makers = [s[-1] for s in samples]
+		# diff_makers = list(set(zip(*diff_makers)[1]))
+
+		# to_remove = list()
+		# for i in range(len(diff_makers)):
+		# 	for j in range(len(diff_makers)):
+		# 		if i==j or i in to_remove or j in to_remove:
+		# 			continue
+		# 		if abs(diff_makers[i]-diff_makers[j]) < .5:
+		# 			to_remove.append(i)
+
+		# for r in to_remove:
+		# 	diff_makers.pop(r)
 
 		relations = list()
 
@@ -61,6 +93,9 @@ class Explanations():
 			if total_relations_pre == total_relations_post:
 				repeat=False
 
+		# relations = list(relations)
+		# relations = [i[0:-1] for i in relations]
+
 		return list(relations)
 
 	def build_helper(self, temp, relations):
@@ -75,9 +110,116 @@ class Explanations():
 
 		return tuple(explanation)
 
-	def score_explanations(self, explanations):
-		pass
+	def likelihood_explanations(self, explanations):
+		
+		actual_events = zip(*self.E.get_summary(False,'1'))[0]
 
+		complement = {
+       	    'Ball A and Ball B collide': 'Ball A and Ball B do not collide',
+            'Ball A and Ball E collide': 'Ball A and Ball E do not collide',
+            'Ball B and Ball E collide': 'Ball B and Ball E do not collide',
+            'Ball A and Ball B do not collide': 'Ball A and Ball B collide',
+            'Ball A and Ball E do not collide': 'Ball A and Ball E collide',
+            'Ball B and Ball E do not collide': 'Ball B and Ball E collide',
+            'Ball E going through the gate': 'Ball E not going through the gate',
+            'Ball E not going through the gate': 'Ball E going through the gate'
+        }
+
+		actual_events_new = list()
+		for e in explanations:
+			if complement[actual_events[0]] in e and \
+				'not' not in e[2] and \
+				complement[actual_events[-1]] in e:
+
+				actual_events_new.append(e)
+
+		if len(actual_events_new) > 0:
+			actual_events = actual_events_new
+
+		total_events_matter = len(actual_events)
+
+		explanations_score = list()
+
+		for explanation in explanations:
+
+			events_matter = 0.0
+			for e in actual_events:
+				if e in explanation:
+					events_matter += 1.0
+
+			score = events_matter / total_events_matter
+			explanations_score.append(score)
+
+		return explanations_score
+
+	def prior_explanations(self, explanations):
+
+		complement = {
+       	    'Ball A and Ball B collide': 'Ball A and Ball B do not collide',
+            'Ball A and Ball E collide': 'Ball A and Ball E do not collide',
+            'Ball B and Ball E collide': 'Ball B and Ball E do not collide',
+            'Ball A and Ball B do not collide': 'Ball A and Ball B collide',
+            'Ball A and Ball E do not collide': 'Ball A and Ball E collide',
+            'Ball B and Ball E do not collide': 'Ball B and Ball E collide',
+            'Ball E going through the gate': 'Ball E not going through the gate',
+            'Ball E not going through the gate': 'Ball E going through the gate'
+        }
+
+		explanations_prior = list()
+
+		for explanation in explanations:
+
+			events = explanation[0::2]
+			s_count = 0.0
+			n_count = 0.0
+
+			for exp in explanations:
+
+				if all([e in exp for e in events[0:-1]]) and events[-1]==exp[-2]:
+					s_count += 1.0
+				if all([e in exp for e in events[0:-1]]) and events[-1]==complement[exp[-2]]:
+					s_count += 1.0
+
+				if all([e in exp for e in events[0:-1]]) and events[-1]==exp[-2]:
+					n_count += 1.0
+				if all([complement[e] in exp for e in events[0:-1]]) and events[-1]==exp[-2]:
+					n_count += 1.0
+
+			explanations_prior.append(.5*(1/s_count)+.5*(1/n_count))
+
+		return explanations_prior
+
+	def edit_explanation(self, explanation):
+
+		complement = {
+       	    'Ball A and Ball B collide': 'Ball A and Ball B do not collide',
+            'Ball A and Ball E collide': 'Ball A and Ball E do not collide',
+            'Ball B and Ball E collide': 'Ball B and Ball E do not collide',
+            'Ball A and Ball B do not collide': 'Ball A and Ball B collide',
+            'Ball A and Ball E do not collide': 'Ball A and Ball E collide',
+            'Ball B and Ball E do not collide': 'Ball B and Ball E collide',
+            'Ball E going through the gate': 'Ball E not going through the gate',
+            'Ball E not going through the gate': 'Ball E going through the gate'
+        }
+
+		explanation = list(explanation)
+		# Add prevents
+		checkpoints = range(len(explanation)-1)[0::2]
+		for check in checkpoints:
+			if 'not' in explanation[check] and explanation[check+1] != 'AFFECTED':
+				explanation[check] = complement[explanation[check]]
+				explanation[check+1] = 'PREVENTED'
+
+		would = False
+		checkpoints = range(len(explanation))[1::2]
+		for check in checkpoints:
+			if would:
+				explanation[check] = 'WOULD HAVE ' + explanation[check] 
+
+			if explanation[check] == 'PREVENTED':
+				would = True
+
+		return tuple(explanation)
 
 
 
@@ -89,13 +231,21 @@ P(E|S) ~ P(S|E)P(E)
 P(S|E) = Calculate this using assumption about how we report events and non-events
 P(E) = negative exponential or uniform
 
-P(S|E) = 1/Distance(S,E)
+P(S|E) = # DM mentioned / Total # DM from actual_events
 
-Distance(S,E)=How many events mentioned matter
-P(E) = 1/len(explanation)
+P(E) = 1/#explanations that fit
+
+AB, BE, E+
+~AB, AE, E+
+
+AB E+
+~AB AE E-
 
 
-'A/B collide CAUSED B/E '
+
+P(E|S) ~ P(S|E)P(E)
 
 
+# Mention non-events when there could have been more than one outcome and the
+# outcome was different than what happened
 """

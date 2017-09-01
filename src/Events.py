@@ -21,8 +21,15 @@ import numpy as np
 class Events():
     
     # Initialize the pymunk physics engine details
-    def __init__(self):
-        pass
+    def __init__(self, a_pos, a_vel, b_pos, b_vel, e_pos, e_vel):
+        self.a_pos = a_pos
+        self.b_pos = b_pos
+        self.e_pos = e_pos
+
+        self.a_vel = a_vel
+        self.b_vel = b_vel
+        self.e_vel = e_vel
+
 
     def pymunk_setup(self):
         # Initialize space and set gravity for space to do simulation over
@@ -109,8 +116,9 @@ class Events():
             draw_options = pymunk.pygame_util.DrawOptions(screen)
            
         # Set initial impulses
-        self.balls_body[0].apply_impulse_at_local_point([-300,0])
-        # self.balls_body[2].apply_impulse_at_local_point([-60,0])
+        self.balls_body[0].apply_impulse_at_local_point(self.a_vel)
+        self.balls_body[1].apply_impulse_at_local_point(self.b_vel)
+        self.balls_body[2].apply_impulse_at_local_point(self.e_vel)
 
         # Will be used to auto-exit if balls stop moving
         done = False
@@ -196,9 +204,9 @@ class Events():
         E_body = pymunk.Body(mass, moment)
 
     	# Set position of rigid body
-        A_body.position = (900,300)
-        B_body.position = (400, 300)
-        E_body.position = (200, 300)
+        A_body.position = self.a_pos
+        B_body.position = self.b_pos
+        E_body.position = self.e_pos
 
     	# Add shape to rigid body
         A_shape = pymunk.Circle(A_body, radius)
