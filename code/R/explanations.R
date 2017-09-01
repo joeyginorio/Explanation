@@ -27,12 +27,13 @@ df.demographics = df.data$datastring %>%
   mutate(time = difftime(df.data$endhit,df.data$beginhit,units = 'mins'))
 
 
-# trial data 
-df.long = df.data$datastring %>% 
-  as.tbl_json() %>%
-  spread_values(participant = jstring('workerId')) %>%
+# trial data
+df.long = df.data %>% 
+  rename(participant = workerid) %>% 
+  select(participant,datastring) %>% 
+  as.tbl_json(.,'datastring') %>%
   enter_object('data') %>%
-  gather_array('clip.order') %>% 
+  gather_array('clip.order') %>%
   enter_object('trialdata') %>% 
   spread_values(clip = jstring('clip'),
                 outcome = jstring('outcome')) %>% 
@@ -40,8 +41,10 @@ df.long = df.data$datastring %>%
   gather_array('question.order') %>% 
   append_values_string('question') %>% 
   left_join(
-    df.data$datastring %>% 
-      as.tbl_json() %>% 
+    df.data %>% 
+      rename(participant = workerid) %>% 
+      select(participant,datastring) %>% 
+      as.tbl_json(.,'datastring') %>%
       enter_object('data') %>%
       gather_array('clip.order') %>% 
       enter_object('trialdata') %>% 
@@ -52,9 +55,9 @@ df.long = df.data$datastring %>%
   mutate(clip = str_replace_all(clip,"clip_",""),
          clip = as.numeric(clip)) %>% 
   select(participant,clip,clip.order,outcome,question.order,question,response) %>% 
-  arrange(participant,clip,question)
+  left_join(read.csv("../../data/trial_info.csv",stringsAsFactors = F))  %>% 
+  arrange(participant,clip,question.index)
   
-
 write.csv(df.long,file = "../../data/data.csv",row.names = F)
   
 
