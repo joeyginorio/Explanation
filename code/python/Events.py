@@ -41,7 +41,11 @@ class Events():
         self.collision_types = {
             'ball_a':0,
             'ball_b':1,
-            'ball_e':2
+            'ball_e':2,
+            'wall_b':3,
+            'wall_t':4,
+            'wall_bl':5,
+            'wall_tl':6
         }
 
         # Add rigid bodies to physics engine
@@ -240,6 +244,7 @@ class Events():
         wall1 = pymunk.Segment(body1, (-400,0),(400,0), 15)
         wall1.color = pygame.color.THECOLORS['black']
         wall1.elasticity = .5
+        wall1.collision_type = self.collision_types['wall_t']
         space.add(wall1)
 
         body2 = pymunk.Body(body_type = pymunk.Body.STATIC)
@@ -247,6 +252,7 @@ class Events():
         wall2 = pymunk.Segment(body2, (-400,0),(400,0), 15)
         wall2.color = pygame.color.THECOLORS['black']
         wall2.elasticity = .5
+        wall2.collision_type = self.collision_types['wall_b']
         space.add(wall2)
 
         body3 = pymunk.Body(body_type = pymunk.Body.STATIC)
@@ -254,6 +260,7 @@ class Events():
         wall3 = pymunk.Segment(body3, (0,0),(0,200), 15)
         wall3.color = pygame.color.THECOLORS['black']
         wall3.elasticity = .5
+        wall3.collision_type = self.collision_types['wall_bl']
         space.add(wall3)
 
         body4 = pymunk.Body(body_type = pymunk.Body.STATIC)
@@ -261,6 +268,7 @@ class Events():
         wall4 = pymunk.Segment(body4, (0,400),(0,600), 15)
         wall4.color = pygame.color.THECOLORS['black']
         wall4.elasticity = .5
+        wall4.collision_type = self.collision_types['wall_tl']
         space.add(wall4)
 
         return wall1, wall2, wall3, wall4
@@ -298,6 +306,30 @@ class Events():
             self.counter += 1
             return False
 
+    def collide_ball_a_wall_b(self, arbiter, space, data):
+        return True
+
+    def collide_ball_a_wall_t(self, arbiter, space, data):
+        return True
+
+    def collide_ball_a_wall_bl(self, arbiter, space, data):
+        return True
+
+    def collide_ball_a_wall_tl(self, arbiter, space, data):
+        return True
+
+    def collide_ball_b_wall_b(self, arbiter, space, data):
+        return True
+
+    def collide_ball_b_wall_t(self, arbiter, space, data):
+        return True
+
+    def collide_ball_b_wall_bl(self, arbiter, space, data):
+        return True
+
+    def collide_ball_b_wall_tl(self, arbiter, space, data):
+        return True
+
     def ball_e_through_gate(self):
 
         if self.balls_body[2].position[0] < -30:
@@ -312,6 +344,8 @@ class Events():
             self.events.append(['Ball E not going through the gate', self.timer])
         
         return all(temp)
+
+
 
     def collision_setup(self):
 
@@ -329,6 +363,47 @@ class Events():
         ball_be = self.space.add_collision_handler(self.collision_types['ball_b'], 
                                             self.collision_types['ball_e'])
         ball_be.begin = self.collide_ball_be
+
+        # Handle collisions between a and wallb
+        ball_a_wall_b = self.space.add_collision_handler(self.collision_types['ball_a'],
+                                            self.collision_types['wall_b'])
+        ball_a_wall_b.begin = self.collide_ball_a_wall_b
+
+        # Handle collisions between a and wallt
+        ball_a_wall_t = self.space.add_collision_handler(self.collision_types['ball_a'],
+                                            self.collision_types['wall_t'])
+        ball_a_wall_t.begin = self.collide_ball_a_wall_t
+
+        # Handle collisions between a and wallb
+        ball_a_wall_bl = self.space.add_collision_handler(self.collision_types['ball_a'],
+                                            self.collision_types['wall_bl'])
+        ball_a_wall_bl.begin = self.collide_ball_a_wall_bl
+
+        # Handle collisions between a and wallb
+        ball_a_wall_tl = self.space.add_collision_handler(self.collision_types['ball_a'],
+                                            self.collision_types['wall_tl'])
+        ball_a_wall_tl.begin = self.collide_ball_a_wall_tl
+
+        # Handle collisions between a and wallb
+        ball_b_wall_b = self.space.add_collision_handler(self.collision_types['ball_b'],
+                                            self.collision_types['wall_b'])
+        ball_b_wall_b.begin = self.collide_ball_b_wall_b
+
+        # Handle collisions between a and wallt
+        ball_b_wall_t = self.space.add_collision_handler(self.collision_types['ball_b'],
+                                            self.collision_types['wall_t'])
+        ball_b_wall_t.begin = self.collide_ball_b_wall_t
+
+        # Handle collisions between a and wallb
+        ball_b_wall_bl = self.space.add_collision_handler(self.collision_types['ball_b'],
+                                            self.collision_types['wall_bl'])
+        ball_b_wall_bl.begin = self.collide_ball_b_wall_bl
+
+        # Handle collisions between a and wallb
+        ball_b_wall_tl = self.space.add_collision_handler(self.collision_types['ball_b'],
+                                            self.collision_types['wall_tl'])
+        ball_b_wall_tl.begin = self.collide_ball_b_wall_tl 
+
 
     def to_pygame(self, position):
         # Small hack to convert pymunk to pygame coordinates

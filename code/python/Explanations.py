@@ -41,20 +41,6 @@ class Explanations():
 		C = Counterfactuals(self.E)
 		checklist, samples = C.setup_checklist()
 
-		# diff_makers = [s[-1] for s in samples]
-		# diff_makers = list(set(zip(*diff_makers)[1]))
-
-		# to_remove = list()
-		# for i in range(len(diff_makers)):
-		# 	for j in range(len(diff_makers)):
-		# 		if i==j or i in to_remove or j in to_remove:
-		# 			continue
-		# 		if abs(diff_makers[i]-diff_makers[j]) < .5:
-		# 			to_remove.append(i)
-
-		# for r in to_remove:
-		# 	diff_makers.pop(r)
-
 		relations = list()
 
 		for check in checklist:
@@ -92,9 +78,7 @@ class Explanations():
 			# End while loop if no new explanations made
 			if total_relations_pre == total_relations_post:
 				repeat=False
-
-		# relations = list(relations)
-		# relations = [i[0:-1] for i in relations]
+			
 
 		return list(relations)
 
@@ -113,7 +97,6 @@ class Explanations():
 	def likelihood_explanations(self, explanations):
 		
 		actual_events = zip(*self.E.get_summary(False,'1'))[0]
-
 		complement = {
        	    'Ball A and Ball B collide': 'Ball A and Ball B do not collide',
             'Ball A and Ball E collide': 'Ball A and Ball E do not collide',
@@ -131,10 +114,20 @@ class Explanations():
 				'not' not in e[2] and \
 				complement[actual_events[-1]] in e:
 
-				actual_events_new.append(e)
+				actual_events_new = [i for i in e[0:-1] if i != 'CAUSED']
+				actual_events_new = [i for i in e[0:-1] if i != 'AFFECTED']
 
+
+
+		print actual_events
+
+		check = 0
 		if len(actual_events_new) > 0:
-			actual_events = actual_events_new
+			for e in explanations:
+				if all([i in e for i in actual_events_new]):
+					check += 1
+			if check < 2:
+				actual_events = actual_events_new
 
 		total_events_matter = len(actual_events)
 
@@ -150,6 +143,7 @@ class Explanations():
 			score = events_matter / total_events_matter
 			explanations_score.append(score)
 
+		print actual_events
 		return explanations_score
 
 	def prior_explanations(self, explanations):
@@ -222,30 +216,3 @@ class Explanations():
 		return tuple(explanation)
 
 
-
-
-"""
-
-P(E|S) ~ P(S|E)P(E)
-
-P(S|E) = Calculate this using assumption about how we report events and non-events
-P(E) = negative exponential or uniform
-
-P(S|E) = # DM mentioned / Total # DM from actual_events
-
-P(E) = 1/#explanations that fit
-
-AB, BE, E+
-~AB, AE, E+
-
-AB E+
-~AB AE E-
-
-
-
-P(E|S) ~ P(S|E)P(E)
-
-
-# Mention non-events when there could have been more than one outcome and the
-# outcome was different than what happened
-"""
