@@ -1,6 +1,11 @@
 {
         "stim":[
         {
+            "name": "clip_3",
+            "questions": ["Explanation 1", "Explanation 2", "Explanation 3"],
+            "outcome": "positive"
+        },
+        {
             "name": "clip_5",
             "questions": ["Explanation 1", "Explanation 2", "Explanation 3"],
             "outcome": "negative"
@@ -21,14 +26,29 @@
             "outcome": "negative"
         },
         {
+            "name": "clip_15",
+            "questions": ["Explanation 1", "Explanation 2", "Explanation 3"],
+            "outcome": "positive"
+        },
+        {
             "name": "clip_16",
             "questions": ["Explanation 1", "Explanation 2", "Explanation 3"],
             "outcome": "positive"
         },
         {
+            "name": "clip_18",
+            "questions": ["Explanation 1", "Explanation 2", "Explanation 3"],
+            "outcome": "negative"
+        },
+        {
             "name": "clip_23",
             "questions": ["Explanation 1", "Explanation 2", "Explanation 3"],
             "outcome": "positive"
+        },
+        {
+            "name": "clip_26",
+            "questions": ["Explanation 1", "Explanation 2", "Explanation 3"],
+            "outcome": "negative"
         }
     ]
 }
