@@ -1,3 +1,4 @@
 participants.db
 server.log
 *.pyc
+.Rproj.user
