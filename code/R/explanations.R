@@ -26,9 +26,10 @@ df.demographics = df.data$datastring %>%
   rename(participant = document.id) %>% 
   mutate(time = difftime(df.data$endhit,df.data$beginhit,units = 'mins'))
 
+
 # trial data 
 df.long = df.data$datastring %>% 
-  as.tbl_json() %>% 
+  as.tbl_json() %>%
   spread_values(participant = jstring('workerId')) %>%
   enter_object('data') %>%
   gather_array('clip.order') %>% 
@@ -54,5 +55,6 @@ df.long = df.data$datastring %>%
   arrange(participant,clip,question)
   
 
+write.csv(df.long,file = "../../data/data.csv",row.names = F)
   
-  
+
