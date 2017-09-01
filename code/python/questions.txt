@@ -12,7 +12,7 @@ Trial 9
 
 2. The collision between Ball A and Ball E would have caused Ball E to go through the gate.
 
-3. If Ball B and E didn't collide, it would have affected the way Ball E didn't go through the gate
+3. If Ball B and E didn't collide, it would have affected the way Ball E didn't go through the gate.
 
 Trial 5
 -------
