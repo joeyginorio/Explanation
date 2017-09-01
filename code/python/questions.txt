@@ -1,0 +1,49 @@
+Trial 7
+-------
+1. The collision between Ball A and Ball B caused Ball A and Ball E to collide, which caused Ball E to go through the gate.
+
+2. The collision between Ball A and Ball B caused Ball A and Ball E to collide.
+
+3. The collision between Ball A and Ball B prevented the collision between Ball B and Ball E, which would have caused Ball E to go through the gate.
+
+Trial 9
+-------
+1. The collision between Ball B and Ball E affected the way Ball E didn't go through the gate.
+
+2. The collision between Ball A and Ball E would have caused Ball E to go through the gate.
+
+3. If Ball B and E didn't collide, it would have affected the way Ball E didn't go through the gate
+
+Trial 5
+-------
+1. The collision between Ball B and Ball E caused Ball A and Ball E to collide, which caused Ball E to not go through the gate.
+
+2. The collision between Ball B and Ball E caused Ball A and Ball E to collide.
+
+3. The collision between Ball A and Ball E to collide caused Ball E to not go through the gate.
+
+Trial 13
+--------
+1. The collision between Ball A and Ball B prevented the collision between Ball A and Ball E, which would have caused Ball E to go through the gate.
+
+2. The collision between Ball A and Ball B prevented the collision between Ball A and Ball E.
+
+3. The collision between Ball A and Ball E prevented Ball E from going through the gate.
+
+Trial 16
+--------
+1. The collision between Ball A and Ball E affected the way Ball E went through the gate.
+
+2. The collision between Ball A and Ball E prevented the collision between Ball B and Ball E, which would have caused Ball E to go through the gate.
+
+3. The collision between Ball B and Ball E would have caused Ball E to go through the gate.
+
+Trial 23
+--------
+1. The collision between Ball A and Ball B prevented the collision between Ball A and Ball E, which would have caused Ball E to not go through the gate.
+
+2. The collision between Ball A and Ball B prevented the collision between Ball A and Ball E.
+
+3. The collision between Ball A and Ball E would have caused Ball E to not go through the gate. 
+
+
