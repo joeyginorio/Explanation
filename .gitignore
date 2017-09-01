@@ -1,3 +1,4 @@
 server.log
+.psiturk_history
 *.pyc
 .Rproj.user
