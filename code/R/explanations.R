@@ -56,7 +56,9 @@ df.long = df.data %>%
          clip = as.numeric(clip)) %>% 
   select(participant,clip,clip.order,outcome,question.order,question,response) %>% 
   left_join(read.csv("../../data/trial_info.csv",stringsAsFactors = F))  %>% 
-  arrange(participant,clip,question.index)
+  arrange(participant,clip,question.index) %>% 
+  select(participant,clip,clip.order,outcome,question.order,question.index,question.quality,response,model.prediction,
+         question)
   
 write.csv(df.long,file = "../../data/data.csv",row.names = F)
   
