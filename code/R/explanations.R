@@ -60,16 +60,20 @@ df.long = df.data %>%
          clip = as.numeric(clip)) %>% 
   select(participant,clip,clip.order,outcome,question.order,question,response) %>% 
   left_join(df.info)  %>% 
+  filter(!(clip==13 & question.index == 3)) %>% 
   arrange(participant,clip,question.index) %>% 
   select(participant,clip,clip.order,outcome,question.order,question.index,question.quality,response,model.prediction,
          question.text)
   
-# write.csv(df.long,file = "../../data/data.csv",row.names = F)
+write.csv(df.long,file = "../../data/data.csv",row.names = F)
   
 
 # Fit model  ----------------------------------------------------------------------------------
 
 df.regression = df.long %>% 
+  # group_by(participant) %>% 
+  # mutate(response = scale(response)) %>% 
+  # filter(!(clip==13 & question.index == 3)) %>% 
   group_by(clip,question.index,question.text) %>% 
   summarise(data = mean(response),
             model = mean(model.prediction)) %>% 
@@ -88,7 +92,7 @@ ggplot(df.plot,aes(x = model, y = data))+
   theme(text = element_text(size=20),
         panel.grid = element_blank())
   
-# cor(df.regression$data,df.regression$model)
+cor(df.regression$data,df.regression$model)
 
 
 # Plot results (bars per question and clip)  --------------------------------------------------

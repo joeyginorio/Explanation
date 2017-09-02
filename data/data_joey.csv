@@ -1,0 +1,19 @@
+participant,clip,clip.order,outcome,question.order,question.index,question.quality,response,model.prediction,question
+debugLX9UG3,5,6,negative,2,1,good,88,1,"The collision between <span style='font-weight:bold;color:blue'>Ball B</span> and <b>Ball E</b> caused <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> to collide, which caused <b>Ball E</b> to not go through the gate."
+debugLX9UG3,5,6,negative,3,2,medium,47,0.666666667,The collision between <span style='font-weight:bold
+debugLX9UG3,5,6,negative,1,3,bad,23,0.333333333,The collision between <span style='font-weight:bold
+debugLX9UG3,7,3,positive,1,1,good,85,1,"The collision between <span style='font-weight:bold;color:green'>Ball A</span> and <span style='font-weight:bold;color:blue'>Ball B</span> caused <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> to collide, which caused <b>Ball E</b> to go through the gate."
+debugLX9UG3,7,3,positive,3,2,medium,33,0.666666667,The collision between <span style='font-weight:bold
+debugLX9UG3,7,3,positive,2,3,bad,54,0.333333333,"The collision between <span style='font-weight:bold;color:green'>Ball A</span> and <span style='font-weight:bold;color:blue'>Ball B</span> prevented the collision between <span style='font-weight:bold;color:blue'>Ball B</span> and <b>Ball E</b>, which would have caused <b>Ball E</b> to go through the gate."
+debugLX9UG3,9,4,negative,2,1,good,58,0.75,The collision between <span style='font-weight:bold
+debugLX9UG3,9,4,negative,3,2,medium,82,0.5,The collision between <span style='font-weight:bold
+debugLX9UG3,9,4,negative,1,3,bad,21,0.208333333,"If <span style='font-weight:bold;color:blue'>Ball B</span> and E didn't collide, it would have affected the way <b>Ball E</b> didn't go through the gate."
+debugLX9UG3,13,5,negative,3,1,good,80,1,"The collision between <span style='font-weight:bold;color:green'>Ball A</span> and <span style='font-weight:bold;color:blue'>Ball B</span> prevented the collision between <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b>, which would have caused <b>Ball E</b> to go through the gate."
+debugLX9UG3,13,5,negative,2,2,medium,51,0.8,The collision between <span style='font-weight:bold
+debugLX9UG3,13,5,negative,1,3,bad,17,0.4,The collision between <span style='font-weight:bold
+debugLX9UG3,16,1,positive,3,1,good,76,0.666666667,The collision between <span style='font-weight:bold
+debugLX9UG3,16,1,positive,2,2,medium,27,0.5,"The collision between <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> prevented the collision between <span style='font-weight:bold;color:blue'>Ball B</span> and <b>Ball E</b>, which would have caused <b>Ball E</b> to go through the gate."
+debugLX9UG3,16,1,positive,1,3,bad,51,0.25,The collision between <span style='font-weight:bold
+debugLX9UG3,23,2,positive,3,1,good,75,1,"The collision between <span style='font-weight:bold;color:green'>Ball A</span> and <span style='font-weight:bold;color:blue'>Ball B</span> prevented the collision between <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b>, which would have caused <b>Ball E</b> to not go through the gate."
+debugLX9UG3,23,2,positive,2,2,medium,29,0.8,The collision between <span style='font-weight:bold
+debugLX9UG3,23,2,positive,1,3,bad,51,0.4,The collision between <span style='font-weight:bold
