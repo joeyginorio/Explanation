@@ -2,7 +2,7 @@
         "stim":[
         {
             "name": "clip_5",
-            "questions": ["The collision between <span style='font-weight:bold;color:blue'>Ball B</span> and <b>Ball E</b> caused <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> to collide, which caused <b>Ball E</b> to not go through the gate.", "The collision between <span style='font-weight:bold;color:blue'>Ball B</span> and <b>Ball E</b> caused <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> to collide.", "The collision between <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> to collide caused <b>Ball E</b> to not go through the gate."],
+            "questions": ["The collision between <span style='font-weight:bold;color:blue'>Ball B</span> and <b>Ball E</b> caused <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> to collide, which caused <b>Ball E</b> to not go through the gate.", "The collision between <span style='font-weight:bold;color:blue'>Ball B</span> and <b>Ball E</b> caused <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> to collide.", "The collision between <span style='font-weight:bold;color:green'>Ball A</span> and <b>Ball E</b> caused <b>Ball E</b> to not go through the gate."],
             "outcome": "negative"
         },
         {

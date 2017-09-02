@@ -59,9 +59,9 @@ class Events():
         # Initialize list to hold all events, and the timer to timestamp them
         self.timer = 0.0
 
-    def get_summary(self, animate, seq):
+    def get_summary(self, animate, seq, save=False):
 
-        events = self.simulate(animate, seq)
+        events = self.simulate(animate, seq, save)
         times = np.unique([i[1] for i in events])
 
         summary = list()
@@ -82,7 +82,7 @@ class Events():
 
         return tuple(summary)
 
-    def simulate(self, animate=False, seq='1'):
+    def simulate(self, animate=False, seq='1',save=False):
 
         self.pymunk_setup()
 
@@ -127,6 +127,7 @@ class Events():
         # Will be used to auto-exit if balls stop moving
         done = False
         
+        pic_count = 0
         # Run the simulation forever, until exit
         while True:
 
@@ -175,7 +176,9 @@ class Events():
                 pygame.display.flip()
                 pygame.display.update()
                 clock.tick(100)
-
+                if save:
+                    pygame.image.save(screen, 'pics/animation'+'{:05}'.format(pic_count)+'.png')
+                    pic_count += 1
 
             else:
                 # Simulation auto ends when ball e goes through game or balls stop
