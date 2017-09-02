@@ -60,11 +60,11 @@ df.long = df.data %>%
          clip = as.numeric(clip)) %>% 
   select(participant,clip,clip.order,outcome,question.order,question,response) %>% 
   left_join(df.info)  %>% 
-  filter(!(clip==13 & question.index == 3)) %>% 
+  # filter(!(clip==13 & question.index == 3)) %>% 
   arrange(participant,clip,question.index) %>% 
   select(participant,clip,clip.order,outcome,question.order,question.index,question.quality,response,model.prediction,
          question.text)
-  
+
 write.csv(df.long,file = "../../data/data.csv",row.names = F)
   
 
@@ -112,9 +112,6 @@ ggplot(df.plot,aes(x=question.index,y=response))+
   theme(text = element_text(size=20),
         panel.grid = element_blank(),
         legend.position = 'bottom')
-
-
-  
 
 
 # Table with question  ------------------------------------------------------------------------
