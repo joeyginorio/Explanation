@@ -115,6 +115,8 @@ ggplot(df.plot,aes(x=question.index,y=response))+
         panel.grid = element_blank(),
         legend.position = 'bottom')
 
+ggsave("../../figures/plots/means_clip_question.pdf",width=10,height=6)
+
 
 # Table with question  ------------------------------------------------------------------------
 
@@ -122,3 +124,9 @@ df.info %>%
   select(clip,question.index,question.text)
   
   
+
+# Correlation matrix  -------------------------------------------------------------------------
+
+# df.long %>% 
+#   # group_by(participant) %>% 
+#   summarise()
