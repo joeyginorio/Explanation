@@ -65,7 +65,7 @@ df.long = df.data %>%
   select(participant,clip,clip.order,outcome,question.order,question.index,question.quality,response,model.prediction,
          question.text)
 
-write.csv(df.long,file = "../../data/data.csv",row.names = F)
+# write.csv(df.long,file = "../../data/data.csv",row.names = F)
   
 
 # Fit model  ----------------------------------------------------------------------------------
@@ -85,9 +85,11 @@ df.regression = df.long %>%
 
 df.plot = df.regression
 
-ggplot(df.plot,aes(x = model, y = data))+
+ggplot(df.plot,aes(x = data, y = model))+
+# ggplot(df.plot,aes(x = model, y = data))+
   geom_smooth(method='lm',color = 'black', alpha = 0.5)+
   geom_point()+
+  # coord_cartesian(xlim = c(-20,100), ylim = c(-1.5,1.5))+
   theme_bw()+
   theme(text = element_text(size=20),
         panel.grid = element_blank())
