@@ -2,6 +2,7 @@
 library(tidyjson)
 library(RSQLite)
 library(stringr)
+library(Hmisc)
 library(tidyverse)
 
 # Read in and structure data ------------------------------------------------------------------
@@ -9,6 +10,9 @@ library(tidyverse)
 con = dbConnect(SQLite(),dbname = "../js/experiment_1/participants.db");
 df.data = dbReadTable(con,"explanations")
 dbDisconnect(con)
+
+#trialinfo
+df.info = read.csv("../../data/trial_info.csv",stringsAsFactors = F)
 
 #filter out incompletes 
 df.data = df.data %>% 
@@ -55,11 +59,63 @@ df.long = df.data %>%
   mutate(clip = str_replace_all(clip,"clip_",""),
          clip = as.numeric(clip)) %>% 
   select(participant,clip,clip.order,outcome,question.order,question,response) %>% 
-  left_join(read.csv("../../data/trial_info.csv",stringsAsFactors = F))  %>% 
+  left_join(df.info)  %>% 
   arrange(participant,clip,question.index) %>% 
   select(participant,clip,clip.order,outcome,question.order,question.index,question.quality,response,model.prediction,
-         question)
+         question.text)
   
-write.csv(df.long,file = "../../data/data.csv",row.names = F)
+# write.csv(df.long,file = "../../data/data.csv",row.names = F)
   
 
+# Fit model  ----------------------------------------------------------------------------------
+
+df.regression = df.long %>% 
+  group_by(clip,question.index,question.text) %>% 
+  summarise(data = mean(response),
+            model = mean(model.prediction)) %>% 
+  ungroup() %>% 
+  mutate(model = lm(data~model)$fitted.values)
+
+
+# Plot results (Scatter plot) -------------------------------------------------------------------------------
+
+df.plot = df.regression
+
+ggplot(df.plot,aes(x = model, y = data))+
+  geom_smooth(method='lm',color = 'black', alpha = 0.5)+
+  geom_point()+
+  theme_bw()+
+  theme(text = element_text(size=20),
+        panel.grid = element_blank())
+  
+# cor(df.regression$data,df.regression$model)
+
+
+# Plot results (bars per question and clip)  --------------------------------------------------
+
+df.plot = df.long %>% 
+  left_join(df.regression %>% select(clip,question.index,model)) %>% 
+  mutate(question.index = factor(question.index,labels= c('good','medium','bad')),
+         clip = factor(clip,levels = c(5, 7, 9, 13, 16, 23), labels = paste0("clip ", c(5, 7, 9, 13, 16, 23))))
+
+ggplot(df.plot,aes(x=question.index,y=response))+
+  stat_summary(fun.y = 'mean',geom='bar',color = 'black', aes(fill = question.index),show.legend = F)+
+  stat_summary(fun.data = mean_cl_boot,geom='errorbar',width=0.3)+
+  stat_summary(aes(y = model), fun.y = 'mean',geom='point', color = 'red', size = 3)+
+  facet_wrap(~clip)+
+  labs(x = "", y ="mean agreement rating")+
+  theme_bw()+
+  theme(text = element_text(size=20),
+        panel.grid = element_blank(),
+        legend.position = 'bottom')
+
+
+  
+
+
+# Table with question  ------------------------------------------------------------------------
+
+df.info %>% 
+  select(clip,question.index,question.text)
+  
+  
