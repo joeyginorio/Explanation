@@ -2,6 +2,7 @@
 library(tidyjson)
 library(RSQLite)
 library(stringr)
+library(corrr)
 library(Hmisc)
 library(tidyverse)
 
@@ -127,6 +128,13 @@ df.info %>%
 
 # Correlation matrix  -------------------------------------------------------------------------
 
-# df.long %>% 
-#   # group_by(participant) %>% 
-#   summarise()
+df.long %>%
+  select(clip,question.index,participant,response) %>% 
+  spread(participant,response) %>% 
+  select(-c(clip,question.index)) %>% 
+  correlate() %>% 
+  stretch() %>% 
+  ggplot(aes(x=x,y=y,fill=r))+
+  geom_tile()+
+  scale_fill_continuous(low = 'white', high = 'black', limits = c(0,1), na.value = 'black')+ 
+  labs(x="",y="")
