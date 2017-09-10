@@ -35,7 +35,7 @@ class Experiment():
 
 	# ballPositions = [A.x, A.y, A.linx, A.liny, B.x, B.y, B.linx, B.liny, E.x, E.y, E.linx, E.liny]
 	# ballPositions[6] = [350, height/2,0,0,width + 30, height/2,-1,0,150,height/2,0,0];
-	def trial7(self, animate=False, seq='1'):
+	def trial7(self, animate=False, seq='1', save=False):
 		a_pos = (350,300)
 		a_vel = (0,0)
 		b_pos = (830,300)
@@ -45,7 +45,7 @@ class Experiment():
 		
 		if animate:
 			E = Events(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
-			E.simulate(animate, seq)
+			E.simulate(animate, seq,save)
 			return
 
 		E = Explanations(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
@@ -64,7 +64,7 @@ class Experiment():
 		
 		if animate:
 			E = Events(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
-			summary = E.get_summary(animate, seq)
+			summary = E.get_summary(animate, seq,save)
 			return summary
 
 		E = Explanations(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
@@ -102,7 +102,7 @@ class Experiment():
 		
 		if animate:
 			E = Events(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
-			summary = E.get_summary(animate, seq)
+			summary = E.get_summary(animate, seq, save)
 			return summary
 
 		E = Explanations(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
@@ -116,13 +116,13 @@ class Experiment():
 		a_pos = (830,170)
 		a_vel = (-300,56)
 		b_pos = (830,430)
-		b_vel = (-225,-40.5)
+		b_vel = (-225,-45.5)
 		e_pos = (170,300)
 		e_vel = (0,0)
 		
 		if animate:
 			E = Events(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
-			summary = E.get_summary(animate, seq)
+			summary = E.get_summary(animate, seq, save)
 			return summary
 
 		E = Explanations(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
@@ -133,16 +133,16 @@ class Experiment():
 
 	# ballPositions[23] = [width+170, 50,-1,0.35,width + 250, 550,-1.1,-0.2,width+30,250,-0.75,0];
 	def trial23(self, animate=False, seq='1',save=False):
-		a_pos = (1020,550)
-		a_vel = (-320,-105)
-		b_pos = (1100,50)
-		b_vel = (-350,120)
+		a_pos = (300,500)
+		a_vel = (0,0)
+		b_pos = (600,500)
+		b_vel = (-240,0)
 		e_pos = (820,250)
-		e_vel = (-250,0)
+		e_vel = (-350,0)
 		
 		if animate:
 			E = Events(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
-			summary = E.get_summary(animate, seq)
+			summary = E.get_summary(animate, seq, save)
 			return summary
 
 		E = Explanations(a_pos, a_vel, b_pos, b_vel, e_pos, e_vel)
