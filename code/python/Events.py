@@ -19,7 +19,7 @@ import random
 import numpy as np
 
 class Events():
-    
+        
     # Initialize the pymunk physics engine details
     def __init__(self, a_pos, a_vel, b_pos, b_vel, e_pos, e_vel):
         self.a_pos = a_pos
