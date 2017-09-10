@@ -59,7 +59,7 @@ results = E.trial7()
 print results[0]
 
 ```
-4. You can try this with other pre-defined trials like trial9(), or add a function of your own to run a unique trial. Easiest way is to just copy paste one of the trials, and then modify the parameters that control the starting position of the balls, and their velocities.
+4. You can try this with other pre-defined trials like trial9(), or add a function of your own to run a unique trial. Easiest way is to just copy paste one of the trials in Experiment.py, and then modify the parameters that control the starting position of the balls, and their velocities. 
 
 
 
