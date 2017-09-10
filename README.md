@@ -38,6 +38,9 @@ ipython
 E = Experiment()
 
 # Run trial 7 animation, actual world
+# animate: controls whether to display animation
+# seq: controls which collision to ignore
+# save: controls whether to save each frame of animation as an img (to convert to video later)
 E.trial7(animate=True, seq='1',save=False)
 
 # Run trial 7 animation, ignoring first collision
