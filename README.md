@@ -34,6 +34,9 @@ ipython
 ```
 3. Now we can run the model. Here are a few examples of animations for counterfactual simulations on trial 7. 
 ```python
+# Load experiment.py script
+run Experiment.py
+
 # Initialize an object from the experiment class
 E = Experiment()
 
