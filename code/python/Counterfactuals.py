@@ -42,7 +42,7 @@ class Counterfactuals():
 
 
 		# Do the brute force search
-		for i in range(100):
+		for i in range(1):
 			for seq in cf_seq:
 				temp = self.E.get_summary(False,seq)
 				samples.append(temp)

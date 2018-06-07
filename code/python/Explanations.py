@@ -119,7 +119,6 @@ class Explanations():
 
 
 
-		print actual_events
 
 		check = 0
 		if len(actual_events_new) > 0:
@@ -143,7 +142,6 @@ class Explanations():
 			score = events_matter / total_events_matter
 			explanations_score.append(score)
 
-		print actual_events
 		return explanations_score
 
 	def prior_explanations(self, explanations):
