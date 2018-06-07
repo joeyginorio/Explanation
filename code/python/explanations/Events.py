@@ -2,9 +2,9 @@
 # BMM Summer Project w/ Tobi
 
 """
-	This script generates events and their animations using pygame
-	and pymunk. The main function "simulate" returns a list of events
-    tagged with the time they occurred.
+This script generates events and their animations using pygame
+and pymunk. The main function "simulate" returns a list of events
+tagged with the time they occurred.
 """
 
 import sys
@@ -19,7 +19,7 @@ import random
 import numpy as np
 
 class Events():
-    
+        
     # Initialize the pymunk physics engine details
     def __init__(self, a_pos, a_vel, b_pos, b_vel, e_pos, e_vel):
         self.a_pos = a_pos
@@ -189,7 +189,7 @@ class Events():
                     return self.events
 
             # Checks if E through the gate
-            done = self.ball_e_through_gate()
+            # done = self.ball_e_through_gate()
 
             # Take a step in the simulation, update clock/ticks
             self.space.step(1/100.0) #3
@@ -411,9 +411,4 @@ class Events():
     def to_pygame(self, position):
         # Small hack to convert pymunk to pygame coordinates
         return [int(position.x)+25, int(-position.y+625)]
-
-
-
-
-
 

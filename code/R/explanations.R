@@ -4,6 +4,7 @@ library(RSQLite)
 library(stringr)
 library(corrr)
 library(Hmisc)
+library(ggrepel)
 library(tidyverse)
 
 # Read in and structure data ------------------------------------------------------------------
@@ -84,12 +85,15 @@ df.regression = df.long %>%
 
 # Plot results (Scatter plot) -------------------------------------------------------------------------------
 
-df.plot = df.regression
+df.plot = df.regression %>% 
+  mutate(difference = data-model,
+         label = paste0(clip,"_",question.index))
 
 ggplot(df.plot,aes(x = data, y = model))+
 # ggplot(df.plot,aes(x = model, y = data))+
   geom_smooth(method='lm',color = 'black', alpha = 0.5)+
   geom_point()+
+  geom_text_repel(data = df.plot %>% filter(abs(difference)> 20),mapping = aes(label = label))+ #label outliers 
   # coord_cartesian(xlim = c(-20,100), ylim = c(-1.5,1.5))+
   theme_bw()+
   theme(text = element_text(size=20),
