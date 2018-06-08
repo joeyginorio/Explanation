@@ -59,6 +59,7 @@ class Events():
         # Initialize list to hold all events, and the timer to timestamp them
         self.timer = 0.0
 
+    # Provides a tuple of all events, and the times they occurred
     def get_summary(self, animate, seq, save=False):
 
         events = self.simulate(animate, seq, save)
@@ -82,6 +83,7 @@ class Events():
 
         return tuple(summary)
 
+    # Runs the event simulation
     def simulate(self, animate=False, seq='1',save=False):
 
         self.pymunk_setup()
@@ -189,7 +191,7 @@ class Events():
                     return self.events
 
             # Checks if E through the gate
-            # done = self.ball_e_through_gate()
+            done = self.ball_e_through_gate()
 
             # Take a step in the simulation, update clock/ticks
             self.space.step(1/100.0) #3

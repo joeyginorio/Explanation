@@ -31,6 +31,8 @@ class Counterfactuals():
 		counterfactuals = set()
 		samples = list()
 
+		# When exhaustively searching the binary sequences, track which
+		# sequences lead to novel counterfactuals, store in cf_seq
 		cf_seq = list()
 		for seq in sequences:
 			temp = self.E.get_summary(False,seq)
@@ -41,7 +43,7 @@ class Counterfactuals():
 				cf_seq.append(seq)
 
 
-		# Do the brute force search
+		# Construct counterfactuals and samples from cf_seq
 		for i in range(1):
 			for seq in cf_seq:
 				temp = self.E.get_summary(False,seq)
@@ -53,6 +55,7 @@ class Counterfactuals():
 		return list(counterfactuals), samples
 		# return cf_seq
 
+	# sets up checklist of event pairs to construct causal relations for!
 	def setup_checklist(self):
 
 		counterfactuals, samples = self.sample_counterfactuals()
@@ -72,6 +75,10 @@ class Counterfactuals():
 
 		return tuple(to_check_final), samples
 		
+	# construct causal relations for:
+	# -cause
+	# -prevented
+	# -affected
 	def get_relations(self, e1, e2, samples):
         
 		complement = {
@@ -98,6 +105,7 @@ class Counterfactuals():
 			sample = zip(*sample)
 			for event in sample:
 
+				
 				if e1 in sample[0] and e2 in sample[0]:
 					cause_1 += 1
 				if e1 in sample[0] and e2 not in sample[0]:
