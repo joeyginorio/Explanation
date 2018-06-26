@@ -13,3 +13,4 @@ server.log
 *.blg
 *.fdb_latexmk
 *.synctex.gz
+.DS_Store
