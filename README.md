@@ -10,7 +10,7 @@ The model is written in python and can be found in /code/python/. There are four
 Code Dependency: Events.py -> Counterfactuals.py -> Explanations.py -> Experiment.py    
 
 #### Events.py
-This script contains the Events class, which contains all the methods for generating physics simulations (including animations).  
+This script contains the Events class, which contains all the methods for generating physics simulations (including animations). 
 #### Counterfactuals.py
 This script contains the Counterfactuals class. It uses the Events class, in addition to newly defined methods, to run counterfactual simulations and construct a tree-like representation of all possible counterfactual worlds for a given physics simulation.  
 #### Explanations.py
@@ -26,7 +26,7 @@ Here's how to run a trial from the experiment:
 
 1. Open terminal at the home directory of the repo, then switch to the python source code by using this command:
 ```
-cd code/python
+cd code/python/explanation
 ```
 2. Start an ipython console by typing this command into terminal:
 ```

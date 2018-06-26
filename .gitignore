@@ -2,3 +2,14 @@ server.log
 .psiturk_history
 *.pyc
 .Rproj.user
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz(busy)
+*.toc
+*.bbl
+*.blg
+*.fdb_latexmk
+*.synctex.gz
