@@ -118,8 +118,6 @@ class Explanations():
 				actual_events_new = [i for i in e[0:-1] if i != 'AFFECTED']
 
 
-
-
 		check = 0
 		if len(actual_events_new) > 0:
 			for e in explanations:
