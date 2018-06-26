@@ -14,6 +14,5 @@ server.log
 *.fdb_latexmk
 *.synctex.gz
 .DS_Store
-*.aux
 *.bbl
 *.blg

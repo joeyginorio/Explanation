@@ -37,10 +37,10 @@ Given an arbitrary physical simulation, and an event we care about, a model of e
 \end{itemize}
 
 
-In order to get that distribution, we frame the task as a problem of bayesian inference. Formally, how do we compute:
+In order to get that distribution, we frame the task as a problem of Bayesian inference. Formally, how do we compute:
 
 \begin{equation}
-P(Explanation|World, Event)  
+P(\text{Explanation}|\text{World}, \text{Event})  
 \end{equation}
 
 If we specify a generative model, we can use it to guide how we compute this distribution. With it, we also have a convenient way to partition the mechanisms of our model, separating parts that compute different elements of the distribution. This will be discussed after introducing the generative model in figure \ref{fig:gen_model}.
