@@ -4,6 +4,7 @@
 \setlength{\parskip}{1.0em}
 
 \usepackage{natbib}
+\usepackage{geometry}
 
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
@@ -14,6 +15,14 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+
+%to do notes stuff 
+\usepackage{todonotes}
+\newcommand{\sttodo}[2][]
+{\todo[caption={\textbf{TG}}, size=\small, color = orange, #1]{#2}~}
+\newcommand{\ttodo}[2][]
+{\vspace{0.1cm}\hfil \todo[caption={\textbf{TG}}, size=\small, color = orange, inline, #1]{#2}}
+
 \begin{document}
 
 % Title and author info
@@ -21,6 +30,9 @@
 \author{Joey Velez-Ginorio}
 \maketitle
 
+\clearpage 
+\tableofcontents
+\clearpage 
 
 
 
@@ -104,6 +116,9 @@ P(W,Ev|Ex) = P(W|Ex)P(Ev|Ex)
 \subsubsection{$P(Ev|Ex)$}
 
 The chance that an event occurred given an explanation can be treated as binary choice. It's 1 if the event was mentioned in the explanation and 0 if the event was not mentioned in the explanation.
+
+\ttodo{This assumption is interesting but might be too strong -- }
+
 
 \subsubsection{$P(W|Ex)$}
 
