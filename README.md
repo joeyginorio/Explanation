@@ -1,5 +1,24 @@
 # Using counterfactual simulation to construct compositional explanations
 ---
+
+## Project structure
+
+.
+├── code
+│   ├── R
+│   ├── js
+│   └── python
+├── data
+├── figures
+│   ├── diagrams
+│   ├── plots
+│   └── screenshots
+├── papers
+├── tables
+├── videos
+└── writeup
+    └── proposal
+
 ## Python Code Summary
 The model is written in python and can be found in /code/python/. There are four main scripts:
 - Events.py
@@ -60,6 +79,7 @@ print results[0]
 
 ```
 4. You can try this with other pre-defined trials like trial9(), or add a function of your own to run a unique trial. Easiest way is to just copy paste one of the trials in Experiment.py, and then modify the parameters that control the starting position of the balls, and their velocities. 
+
 
 
 
